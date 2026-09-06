@@ -70,11 +70,14 @@ a map.
 
 ```bash
 cd solution
-make -C libtci re
 bash gen_assets.sh
-make re
+make
 ./maze ../fixtures/maze1.txt
 ```
+
+`make` builds `libtci` and `libtciutil` first if their archives are not
+there — they are build artefacts, so the repository ships their source
+and not the `.a` files.
 
 Controls: arrow keys or `h`/`j`/`k`/`l` to move, Escape or `q` to quit.
 Find the yellow marker.
