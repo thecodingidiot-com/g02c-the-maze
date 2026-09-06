@@ -1,24 +1,30 @@
-NAME    = maze
 CC      = gcc
-CFLAGS  = -Wall -Wextra -g -std=c99 -I libtci
-LIBS    = libtci/libtci.a libtci/libtciutil.a -lSDL2 -lSDL2_image
+CFLAGS  = -Wall -Wextra -Werror -D_REENTRANT -I libtci
+LDFLAGS = $(shell sdl2-config --libs) -lSDL2_image
 SRCS    = main.c map.c player.c camera.c render.c
 OBJS    = $(SRCS:.c=.o)
+LIBS    = libtci/libtci.a libtci/libtciutil.a
+NAME    = maze
+
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+$(NAME): $(OBJS) $(LIBS)
+	$(CC) $(OBJS) $(LIBS) $(LDFLAGS) -o $(NAME)
+
+$(LIBS):
+	$(MAKE) -C libtci
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
+	$(MAKE) -C libtci clean
 	rm -f $(OBJS)
 
 fclean: clean
+	$(MAKE) -C libtci fclean
 	rm -f $(NAME)
 
 re: fclean all
-
-.PHONY: all clean fclean re
