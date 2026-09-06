@@ -1,0 +1,4 @@
+*.o
+solution/maze
+solution/assets/
+solution/libtci/*.a
